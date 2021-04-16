@@ -31,10 +31,7 @@ const showImages = (images) => {
 const getImages = (query) => {
   fetch(`https://pixabay.com/api/?key=${KEY}=${query}&image_type=photo&pretty=true`)
     .then(response => response.json())
-    .then(data => {
-      showImages(data.hits) // 1st problem is solved
-      // console.log(data.hits)
-    })
+    .then(data => showImages(data.hits))// 1st problem is solved
     .catch(err => console.log(err))
 }
 
@@ -71,19 +68,27 @@ const createSlider = () => {
   // hide image aria
   imagesArea.style.display = 'none';
   const duration = document.getElementById('duration').value || 1000; // 2nd problem is solved
-  sliders.forEach(slide => {
-    let item = document.createElement('div')
-    item.className = "slider-item";
-    item.innerHTML = `<img class="w-100"
-    src="${slide}"
-    alt="">`;
-    sliderContainer.appendChild(item)
-  })
-  changeSlide(0)
-  timer = setInterval(function () {
-    slideIndex++;
-    changeSlide(slideIndex);
-  }, duration);
+  // 3rd problem is solved
+  if(duration > -1){
+    sliders.forEach(slide => {
+      let item = document.createElement('div')
+      item.className = "slider-item";
+      item.innerHTML = `<img class="w-100"
+      src="${slide}"
+      alt="">`;
+      sliderContainer.appendChild(item)
+    })
+    changeSlide(0)
+    timer = setInterval(function () {
+      slideIndex++;
+      changeSlide(slideIndex);
+    }, duration);
+  }
+  else{
+    alert("Negative Duration is not allowed!!!")
+    imagesArea.style.display = 'block';
+  }
+  // 3rd problem is solved
 }
 
 // change slider index 
