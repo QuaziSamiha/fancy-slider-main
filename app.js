@@ -31,11 +31,13 @@ const showImages = (images) => {
     div.className = 'col-lg-3 col-md-4 col-xs-6 img-item mb-2';
     div.innerHTML = ` <img class="img-fluid img-thumbnail" onclick=selectItem(event,"${image.webformatURL}") src="${image.webformatURL}" alt="${image.tags}">`;
     gallery.appendChild(div)
+    toggleSpinner(false); // for extra feature
   })
 
 }
 
 const getImages = (query) => {
+  toggleSpinner(true); // for extra feature
   fetch(`https://pixabay.com/api/?key=${KEY}=${query}&image_type=photo&pretty=true`)
     .then(response => response.json())
     .then(data => showImages(data.hits))// 1st problem is solved
@@ -54,6 +56,14 @@ const selectItem = (event, img) => {
     alert('Hey, Already added !') // ata remove kre dia toggle ar kaj krte hbe
   }
 }
+
+// extra feature is added... enter button of keyboard is also working for create slider button
+addEventListener('keypress', function(event){
+  if(event.key == 'Enter'){
+    sliderBtn.click();
+  }
+});
+
 var timer
 const createSlider = () => {
   // check slider image length
@@ -135,3 +145,14 @@ searchBtn.addEventListener('click', function () {
 sliderBtn.addEventListener('click', function () {
   createSlider()
 })
+
+// for extra feature a spinner is add
+const toggleSpinner = (show) => {
+  const spinner = document.getElementById('loading-spinner');
+  if(show == true){
+    spinner.classList.remove('d-none');
+  }
+  else{
+    spinner.classList.add('d-none');
+  }
+}
